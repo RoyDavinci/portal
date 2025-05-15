@@ -58,6 +58,12 @@ const DashboardLayout = () => {
 					>
 						<FiSend className='text-lg' /> Send Formatted SMS
 					</Link>
+					<Link
+						to='/dashboard/search'
+						className='flex items-center gap-3 px-3 py-2 rounded-md text-gray-200 hover:bg-blue-600 hover:text-white transition-colors'
+					>
+						<FiSend className='text-lg' /> Search
+					</Link>
 					{(currentRole === "admin" || currentRole === "super_admin") && (
 						<Link
 							to='/dashboard/create_user'

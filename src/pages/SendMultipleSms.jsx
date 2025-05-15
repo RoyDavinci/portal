@@ -5,6 +5,9 @@ import { TextField } from "@mui/material";
 import { UploadIcon } from "lucide-react";
 import { styled } from "@mui/material/styles";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 const SendMultipleSmsPage = () => {
 	const [file, setFile] = useState(null);
 	const [text, setText] = useState("");
@@ -14,6 +17,8 @@ const SendMultipleSmsPage = () => {
 	const [groups, setGroups] = useState([]);
 	const [groupId, setGroupId] = useState("");
 	//	'welcome'
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchGroups = async () => {
@@ -54,8 +59,8 @@ const SendMultipleSmsPage = () => {
 		setError(null);
 		setSuccessMessage(null);
 
-		if (!file) {
-			setError("Please select a file to upload.");
+		if (!file && !groupId) {
+			setError("Please select a file to upload. or a group to send to");
 			setLoading(false);
 			return;
 		}
@@ -87,10 +92,12 @@ const SendMultipleSmsPage = () => {
 			);
 
 			if (response.data.status) {
+				toast.success(response.data.message || "SMS Queued successfully");
 				setSuccessMessage(response.data.message);
 				setFile(null);
 				setText("");
 				setGroupId("");
+				navigate("/dashboard");
 			} else {
 				setError(response.data.message || "Failed to process file.");
 			}

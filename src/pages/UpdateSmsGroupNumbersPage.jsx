@@ -155,22 +155,36 @@ const UpdateSmsGroupNumbersPage = () => {
 		e.preventDefault();
 		setLoading(true);
 		setError(null);
-		const numbersArray = Array.isArray(numbers)
-			? numbers
-			: numbers.split(",").map((num) => num.trim());
+
+		if (!file) {
+			setError("Please upload a valid file.");
+			setLoading(false);
+			return;
+		}
+
 		try {
 			const token = localStorage.getItem("token");
+			const formData = new FormData();
+			formData.append("file", file);
+			formData.append("group_id", groupId);
+			formData.append("action", action);
+
 			const response = await axios.post(
 				"https://messaging.approot.ng/ubabulk/update_sms_group_numbers.php",
-				{ action, group_id: groupId, numbers: numbersArray },
-				{ headers: { Authorization: `Bearer ${token}` } }
+				formData,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						"Content-Type": "multipart/form-data",
+					},
+				}
 			);
+
 			if (response.data.status) {
 				toast.success("Upload successful!");
-
 				navigate("/dashboard");
 			} else {
-				setError(response.data.message);
+				setError(response.data.message || "Failed to update group.");
 			}
 		} catch (err) {
 			setError("Something went wrong. Please try again.");
@@ -223,35 +237,6 @@ const UpdateSmsGroupNumbersPage = () => {
 							manual entry.
 						</p>
 					</div>
-
-					<div>
-						<div className='flex justify-between items-center mb-1'>
-							<label className='block text-sm font-medium text-gray-700'>
-								Phone Numbers (comma separated)
-							</label>
-							{file && (
-								<button
-									type='button'
-									className='text-xs text-blue-600 hover:underline'
-									onClick={() => {
-										setFile(null);
-										setNumbers("");
-									}}
-								>
-									Clear file
-								</button>
-							)}
-						</div>
-						<textarea
-							rows={4}
-							value={numbers}
-							onChange={(e) => setNumbers(e.target.value)}
-							disabled={!!file}
-							placeholder='e.g. 08012345678, 08098765432...'
-							className='w-full border border-gray-300 rounded-lg p-3 resize-y focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:bg-gray-100'
-						/>
-					</div>
-
 					<div>
 						<label className='block text-sm font-medium text-gray-700 mb-1'>
 							Action

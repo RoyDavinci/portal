@@ -13,6 +13,7 @@ import SendMultipleSmsPage from "./pages/SendMultipleSms";
 import NotFoundPage from "./pages/NotFound";
 import SendFormattedSms from "./pages/SendFormattedSms";
 import FileUploadServer from "./pages/New";
+import MessageSearch from "./pages/Search";
 
 function App() {
 	return (
@@ -44,6 +45,7 @@ function App() {
 						element={<UpdateSmsGroupNumbersPage />}
 					/>
 					<Route path='formatted-sms' element={<FileUploadServer />} />
+					<Route path='search' element={<MessageSearch />} />
 				</Route>
 
 				<Route path='*' element={<NotFoundPage />} />
