@@ -32,13 +32,13 @@ const DashboardPage = () => {
 	const [deliveryRates, setDeliveryRates] = useState({});
 	const [totalMessages, setTotalMessages] = useState(0);
 	const [loading, setLoading] = useState(true);
+	const [queuesTotal, setQueuesTotal] = useState(0);
+	const [messagesTotal, setMessagesTotal] = useState(0);
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const res = await axios.get(
-					"https://messaging.approot.ng/ubabulk/portal.php"
-				);
+				const res = await axios.get("https://bulksms.approot.ng///portal.php");
 				const result = res.data;
 
 				if (result.status === "success") {
@@ -67,6 +67,8 @@ const DashboardPage = () => {
 					setTotalMessages(total);
 					setMessageSummary(result.data);
 					setDeliveryRates(result.delivery_rates || {});
+					setQueuesTotal(result.totals.queues || 0);
+					setMessagesTotal(result.totals.messages || 0);
 				}
 			} catch (error) {
 				console.error("Failed to fetch messages data", error);
@@ -76,6 +78,10 @@ const DashboardPage = () => {
 		};
 
 		fetchData();
+
+		setInterval(() => {
+			fetchData();
+		}, 4000);
 	}, []);
 
 	return (
@@ -93,8 +99,8 @@ const DashboardPage = () => {
 						<div className='bg-white p-6 rounded-lg shadow flex items-center space-x-4'>
 							<FiMessageCircle className='text-blue-600 text-3xl' />
 							<div>
-								<p className='text-gray-600'>Total Messages</p>
-								<h2 className='text-xl font-bold'>{totalMessages}</h2>
+								<p className='text-gray-600'>Total Messages Processed</p>
+								<h2 className='text-xl font-bold'>{messagesTotal}</h2>
 							</div>
 						</div>
 						<div className='bg-white p-6 rounded-lg shadow flex items-center space-x-4'>
@@ -104,6 +110,13 @@ const DashboardPage = () => {
 								<h2 className='text-xl font-bold'>
 									{Object.keys(messageSummary).length}
 								</h2>
+							</div>
+						</div>
+						<div className='bg-white p-6 rounded-lg shadow flex items-center space-x-4'>
+							<FiUsers className='text-purple-600 text-3xl' />
+							<div>
+								<p className='text-gray-600'>Total Items Pending</p>
+								<h2 className='text-xl font-bold'>{queuesTotal}</h2>
 							</div>
 						</div>
 						<div className='bg-white p-6 rounded-lg shadow flex items-center space-x-4'>

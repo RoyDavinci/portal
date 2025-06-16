@@ -14,7 +14,7 @@ const CreateUserPage = () => {
 	useEffect(() => {
 		if (currentRole === "super_admin") {
 			axios
-				.get("https://messaging.approot.ng/ubabulk/get_organisations.php")
+				.get("https://bulksms.approot.ng///get_organisations.php")
 				.then((res) => {
 					if (res.data.status && res.data.organisations) {
 						setOrganisations(res.data.organisations);
@@ -44,7 +44,7 @@ const CreateUserPage = () => {
 			const token = localStorage.getItem("token");
 
 			const response = await axios.post(
-				"https://messaging.approot.ng/ubabulk/create_user.php",
+				"https://bulksms.approot.ng///create_user.php",
 				payload,
 				{
 					headers: {

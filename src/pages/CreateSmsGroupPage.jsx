@@ -18,7 +18,7 @@ const CreateSmsGroupPage = () => {
 			const token = localStorage.getItem("token");
 
 			const response = await axios.post(
-				"https://messaging.approot.ng/ubabulk/create_sms_group.php",
+				"https://bulksms.approot.ng///create_sms_group.php",
 				{ name },
 				{
 					headers: {

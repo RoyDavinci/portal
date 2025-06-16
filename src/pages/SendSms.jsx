@@ -20,7 +20,7 @@ const SendSmsPage = () => {
 			const token = localStorage.getItem("token");
 
 			const response = await axios.post(
-				"https://messaging.approot.ng/ubabulk/send_sms.php", //  Endpoint
+				"https://bulksms.approot.ng///send_sms.php", //  Endpoint
 				{ msisdn, text, group_id: groupId }, // Include group_id
 				{
 					headers: {
@@ -47,7 +47,7 @@ const SendSmsPage = () => {
 			try {
 				const token = localStorage.getItem("token");
 				const response = await axios.get(
-					"https://messaging.approot.ng/ubabulk/list_groups.php",
+					"https://bulksms.approot.ng///list_groups.php",
 					{
 						headers: {
 							Authorization: `Bearer ${token}`,

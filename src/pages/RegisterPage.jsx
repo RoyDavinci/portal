@@ -20,7 +20,7 @@ const RegisterPage = () => {
 
 		try {
 			const response = await axios.post(
-				"https://messaging.approot.ng/ubabulk/register.php",
+				"https://bulksms.approot.ng///register.php",
 				{
 					email,
 					password,

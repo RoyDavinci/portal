@@ -78,7 +78,7 @@ const MessageSearch = () => {
 		try {
 			setLoading(true);
 			const response = await axios.get(
-				"https://messaging.approot.ng/ubabulk/search.php",
+				"https://bulksms.approot.ng///search.php",
 				{
 					params: {
 						phoneNumber,
@@ -162,31 +162,6 @@ const MessageSearch = () => {
 						<FaDownload className='mr-2' /> Export
 					</CSVLink>
 				)}
-
-				{/* {results.length > 0 && (
-					<CSVLink
-						data={results}
-						headers={[
-							{ label: "Phone", key: "msisdn" },
-							{ label: "Message", key: "text" },
-							{ label: "Status Code", key: "dlr_request" },
-							{
-								label: "Description",
-								key: (row) => getErrorMessage(row.dlr_request),
-							},
-							{ label: "DLR Status", key: "dlr_status" },
-							{ label: "Network", key: "network" },
-							{ label: "Sender ID", key: "senderid" },
-							{ label: "Date", key: "created_at" },
-						]}
-						filename={`messages_export_${phoneNumber}.csv`}
-						style={{ textDecoration: "none" }}
-					>
-						<Button variant='outlined' color='secondary'>
-							Export CSV
-						</Button>
-					</CSVLink>
-				)} */}
 			</Box>
 
 			{loading ? (

@@ -20,7 +20,7 @@ const FileUploadServer = () => {
 			try {
 				const token = localStorage.getItem("token");
 				const response = await axios.get(
-					"https://messaging.approot.ng/ubabulk/list_groups.php",
+					"https://bulksms.approot.ng///list_groups.php",
 					{
 						headers: {
 							Authorization: `Bearer ${token}`,
@@ -76,7 +76,7 @@ const FileUploadServer = () => {
 		try {
 			const token = localStorage.getItem("token");
 			const response = await axios.post(
-				"https://messaging.approot.ng/ubabulk/process_file.php",
+				"https://bulksms.approot.ng//queues2.php",
 				formData,
 				{
 					headers: {

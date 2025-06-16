@@ -11,11 +11,14 @@ import { useNavigate } from "react-router-dom";
 const SendMultipleSmsPage = () => {
 	const [file, setFile] = useState(null);
 	const [text, setText] = useState("");
+	const [batchId, setBathId] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [successMessage, setSuccessMessage] = useState(null);
 	const [groups, setGroups] = useState([]);
 	const [groupId, setGroupId] = useState("");
+	const [smsType, setSmsType] = useState("general");
+
 	//	'welcome'
 
 	const navigate = useNavigate();
@@ -25,7 +28,7 @@ const SendMultipleSmsPage = () => {
 			try {
 				const token = localStorage.getItem("token");
 				const response = await axios.get(
-					"https://messaging.approot.ng/ubabulk/list_groups.php",
+					"https://bulksms.approot.ng///list_groups.php",
 					{
 						headers: {
 							Authorization: `Bearer ${token}`,
@@ -74,14 +77,17 @@ const SendMultipleSmsPage = () => {
 		const formData = new FormData();
 		formData.append("file", file);
 		formData.append("text", text);
+		formData.append("sms_type", smsType);
+		formData.append("batchId", batchId);
 		if (groupId) {
 			formData.append("group_id", String(groupId)); // Send group ID
 		}
 
 		try {
 			const token = localStorage.getItem("token");
+			console.log(token);
 			const response = await axios.post(
-				"https://messaging.approot.ng/ubabulk/queues.php",
+				"https://bulksms.approot.ng//queues2.php",
 				formData,
 				{
 					headers: {
@@ -119,100 +125,6 @@ const SendMultipleSmsPage = () => {
 		whiteSpace: "nowrap",
 		width: 1,
 	});
-
-	// const parseFile = useCallback((file) => {
-	// 	return new Promise((resolve, reject) => {
-	// 		const reader = new FileReader();
-
-	// 		reader.onload = (event) => {
-	// 			try {
-	// 				const data = event.target?.result;
-	// 				if (!data) {
-	// 					reject(new Error("No data read from file"));
-	// 					return;
-	// 				}
-
-	// 				let extractedNumbers = [];
-
-	// 				if (file.name.endsWith(".csv")) {
-	// 					// Handle CSV
-	// 					const text = data;
-	// 					const lines = text.split("\n").filter((line) => line.trim() !== "");
-	// 					const header = lines[0].split(",").map((h) => h.trim());
-	// 					const hasHeader = header.some((h) => isNaN(Number(h)));
-
-	// 					if (hasHeader) {
-	// 						extractedNumbers = lines
-	// 							.slice(1)
-	// 							.map((line) => line.split(",")[0].trim());
-	// 					} else {
-	// 						extractedNumbers = lines.map((line) => line.split(",")[0].trim());
-	// 					}
-	// 					extractedNumbers = extractedNumbers.filter((n) => n !== "");
-	// 					extractedNumbers = extractedNumbers.map((number) => {
-	// 						let formattedNumber = number.replace(/[-/s]/g, "");
-	// 						if (formattedNumber.startsWith("0")) {
-	// 							formattedNumber = "234" + formattedNumber.slice(1);
-	// 						} else if (formattedNumber.startsWith("+")) {
-	// 							formattedNumber = formattedNumber.replace("+", "");
-	// 						}
-	// 						return formattedNumber;
-	// 					});
-	// 					resolve(extractedNumbers);
-	// 				} else if ([".xlsx", ".xls"].some((ext) => file.name.endsWith(ext))) {
-	// 					// Handle Excel
-	// 					const workbook = XLSX.read(data, { type: "array" });
-	// 					const sheetName = workbook.SheetNames[0];
-	// 					const worksheet = workbook.Sheets[sheetName];
-	// 					const rawData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
-	// 					const hasHeader =
-	// 						Array.isArray(rawData[0]) &&
-	// 						rawData[0].some((h) => isNaN(Number(h)));
-
-	// 					if (hasHeader) {
-	// 						extractedNumbers = rawData
-	// 							.slice(1)
-	// 							.map((row) =>
-	// 								Array.isArray(row) ? String(row[0]).trim() : ""
-	// 							);
-	// 					} else {
-	// 						extractedNumbers = rawData.map((row) =>
-	// 							Array.isArray(row) ? String(row[0]).trim() : ""
-	// 						);
-	// 					}
-	// 					extractedNumbers = extractedNumbers.filter((n) => n !== "");
-	// 					extractedNumbers = extractedNumbers.map((number) => {
-	// 						let formattedNumber = number.replace(/[-/s]/g, "");
-	// 						if (formattedNumber.startsWith("0")) {
-	// 							formattedNumber = "234" + formattedNumber.slice(1);
-	// 						} else if (formattedNumber.startsWith("+")) {
-	// 							formattedNumber = formattedNumber.replace("+", "");
-	// 						}
-	// 						return formattedNumber;
-	// 					});
-	// 					resolve(extractedNumbers);
-	// 				} else {
-	// 					reject(
-	// 						new Error("Unsupported file type.  Use .csv, .xlsx, or .xls")
-	// 					);
-	// 				}
-	// 			} catch (e) {
-	// 				reject(new Error("Error parsing file: " + e.message));
-	// 			}
-	// 		};
-
-	// 		reader.onerror = () => {
-	// 			reject(new Error("Error reading file"));
-	// 		};
-
-	// 		if (file.name.endsWith(".csv")) {
-	// 			reader.readAsText(file);
-	// 		} else {
-	// 			reader.readAsArrayBuffer(file);
-	// 		}
-	// 	});
-	// }, []);
 
 	return (
 		<div className='min-h-screen flex items-center justify-center bg-gray-100 px-4'>
@@ -274,6 +186,36 @@ const SendMultipleSmsPage = () => {
 							required
 						/>
 					</div>
+					<div>
+						<label
+							htmlFor='batch'
+							className='block text-sm font-medium text-gray-700'
+						>
+							Batch ID
+						</label>
+						<TextField
+							id='batch'
+							value={batchId}
+							onChange={(e) => setBathId(e.target.value)}
+							placeholder='Enter your SMS message here...'
+							className='w-full'
+							required
+						/>
+					</div>
+					<FormControl fullWidth>
+						<InputLabel id='sms-type-label'>SMS Type</InputLabel>
+						<Select
+							labelId='sms-type-label'
+							id='sms_type'
+							value={smsType}
+							label='SMS Type'
+							onChange={(e) => setSmsType(e.target.value)}
+						>
+							<MenuItem value='general'>General</MenuItem>
+							<MenuItem value='custom'>Custom</MenuItem>
+						</Select>
+					</FormControl>
+
 					<FormControl fullWidth>
 						<InputLabel id='group-select-label'>
 							Select SMS Group (Optional)

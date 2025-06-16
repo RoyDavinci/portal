@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { LogOut, Settings, UserCircle, Menu } from "lucide-react";
-import { FiSend, FiUsers, FiLayers, FiGrid, FiLogOut } from "react-icons/fi";
+import { FiSend, FiUsers, FiLayers, FiGrid, FiFileText } from "react-icons/fi";
 import {
 	Avatar,
 	Menu as MuiMenu,
@@ -10,6 +10,8 @@ import {
 	IconButton,
 	Tooltip,
 } from "@mui/material";
+import logo from "../assets/RedpayVT.jpg";
+import backgroundImage from "../assets/RedpayVT.png";
 
 const DashboardLayout = () => {
 	const navigate = useNavigate();
@@ -25,14 +27,22 @@ const DashboardLayout = () => {
 
 	const handleLogout = () => {
 		localStorage.clear();
-		navigate("/login");
+		navigate("/");
 	};
 
 	return (
 		<div className='flex h-screen overflow-hidden'>
 			{/* Sidebar */}
 			<aside className='w-64 flex-shrink-0 bg-gray-900 text-white p-6 shadow-md h-screen overflow-y-auto'>
-				<h2 className='text-2xl font-bold mb-8'>📨 SMS Portal</h2>
+				<div className='flex items-center p-4 rounded-lg shadow space-x-4'>
+					<img
+						src={backgroundImage}
+						alt='logo'
+						className='w-10 h-10 rounded-full'
+					/>
+					<h2 className='text-xl font-bold text-white'>SMS Portal</h2>
+				</div>
+
 				<nav className='space-y-2'>
 					<Link
 						to='/dashboard'
@@ -52,12 +62,7 @@ const DashboardLayout = () => {
 					>
 						<FiSend className='text-lg' /> Send Multiple SMS
 					</Link>
-					<Link
-						to='/dashboard/formatted-sms'
-						className='flex items-center gap-3 px-3 py-2 rounded-md text-gray-200 hover:bg-blue-600 hover:text-white transition-colors'
-					>
-						<FiSend className='text-lg' /> Send Formatted SMS
-					</Link>
+
 					<Link
 						to='/dashboard/search'
 						className='flex items-center gap-3 px-3 py-2 rounded-md text-gray-200 hover:bg-blue-600 hover:text-white transition-colors'
@@ -92,6 +97,12 @@ const DashboardLayout = () => {
 						className='flex items-center gap-3 px-3 py-2 rounded-md text-gray-200 hover:bg-blue-600 hover:text-white transition-colors'
 					>
 						<FiLayers className='text-lg' /> Update SMS Numbers
+					</Link>
+					<Link
+						to='/dashboard/uploaded_files'
+						className='flex items-center gap-3 px-3 py-2 rounded-md text-gray-200 hover:bg-blue-600 hover:text-white transition-colors'
+					>
+						<FiFileText className='text-lg' /> Uploaded Files
 					</Link>
 				</nav>
 			</aside>
@@ -142,8 +153,23 @@ const DashboardLayout = () => {
 				</header>
 
 				{/* Scrollable Content */}
-				<main className='flex-1 overflow-y-auto p-6 bg-gray-100'>
-					<Outlet />
+				<main className='relative flex-1 overflow-y-auto p-6 min-h-screen'>
+					{/* Background layer with opacity */}
+					<div
+						className='absolute inset-0 z-0 h-full w-full'
+						style={{
+							backgroundImage: `url(${logo})`,
+							backgroundSize: "cover",
+							backgroundPosition: "center",
+							backgroundRepeat: "no-repeat",
+							opacity: 0.2,
+						}}
+					></div>
+
+					{/* Foreground content */}
+					<div className='relative z-10 bg-white bg-opacity-80 p-4 rounded-lg shadow-md min-h-screen'>
+						<Outlet />
+					</div>
 				</main>
 			</div>
 		</div>

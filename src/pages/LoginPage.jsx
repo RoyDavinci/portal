@@ -14,7 +14,7 @@ const LoginForm = () => {
 
 		try {
 			const response = await axios.post(
-				"https://messaging.approot.ng/ubabulk/login.php",
+				"https://bulksms.approot.ng//login.php",
 				{
 					email,
 					password,

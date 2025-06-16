@@ -14,6 +14,7 @@ import NotFoundPage from "./pages/NotFound";
 import SendFormattedSms from "./pages/SendFormattedSms";
 import FileUploadServer from "./pages/New";
 import MessageSearch from "./pages/Search";
+import UploadedFilesList from "./pages/UploadedFiles.";
 
 function App() {
 	return (
@@ -46,6 +47,7 @@ function App() {
 					/>
 					<Route path='formatted-sms' element={<FileUploadServer />} />
 					<Route path='search' element={<MessageSearch />} />
+					<Route path='uploaded_files' element={<UploadedFilesList />} />
 				</Route>
 
 				<Route path='*' element={<NotFoundPage />} />
