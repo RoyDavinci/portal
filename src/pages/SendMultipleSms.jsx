@@ -186,6 +186,9 @@ const SendMultipleSmsPage = () => {
 		usedParams.forEach((param, index) => {
 			formData.append(`params${index + 1}`, param);
 		});
+		// columns.forEach((param, index) => {
+		// 	formData.append(`params${index + 1}`, param);
+		// });
 		formData.append("paramCount", Number(usedParams.length));
 
 		for (let pair of formData.entries()) {

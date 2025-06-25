@@ -1,26 +1,30 @@
 <?php
 
-$param1 = 'MAthias';
-$param2 = 'Roy';
-$param3 = '09159403602';
-$param4 = 'defbau';
-$param5  = 'dd@gmail.com';
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
 
-$text = 'Hi   [last_name] [first_name] your  [otp] has been sent to your  [email]';
-$keys = "PHONE_NO,first_name,last_name";
+$directory = 'downloads';
+$files = [];
 
-preg_match_all('/\[(.*?)\]/', $text, $matches);
-$placeholders = $matches[0];
-
-// Step 2: Explode the keys
-$keyParts = explode(',', $keys);
-
-$values = [];
-foreach ($keyParts as $index => $key) {
-    $varName = 'param' . ($index + 1);
-    $values[] = $$varName;
+if (is_dir($directory)) {
+    $dir = opendir($directory);
+    while (($file = readdir($dir)) !== false) {
+        if ($file != "." && $file != ".." && pathinfo($file, PATHINFO_EXTENSION) == 'zip') {
+            $files[] = $file;
+        }
+    }
+    closedir($dir);
 }
 
-$text = str_replace($placeholders, $values, $text);
+usort($files, function ($a, $b) {
+    $dateA = DateTime::createFromFormat('Y-m-d', substr($a, 7, 10));
+    $dateB = DateTime::createFromFormat('Y-m-d', substr($b, 7, 10));
 
-echo $text;
+    return $dateB <=> $dateA;
+});
+
+
+
+echo json_encode($files);

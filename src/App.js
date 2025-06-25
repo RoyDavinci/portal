@@ -18,6 +18,7 @@ import UploadedFilesList from "./pages/UploadedFiles.";
 import OtpPage from "./pages/Otp";
 import SummaryPage from "./pages/SummaryPage";
 import ManageMessageCategories from "./pages/CreateCategories";
+import Logs from "./pages/Logs";
 
 function App() {
 	return (
@@ -54,6 +55,7 @@ function App() {
 					<Route path='uploaded_files' element={<UploadedFilesList />} />
 					<Route path='summary' element={<SummaryPage />} />
 					<Route path='categories' element={<ManageMessageCategories />} />
+					<Route path='logs' element={<Logs />} />
 				</Route>
 
 				<Route path='*' element={<NotFoundPage />} />

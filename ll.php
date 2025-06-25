@@ -1,11 +1,11 @@
 <?php
-$name = "UBA";
-$total = 500;
+$name = "UBB";
+$total = 100;
 
-for ($x = 401; $x <= $total; $x++) {
+for ($x = 1; $x <= $total; $x++) {
 
     $file = $name . $x . ".php";
-    $str = "<?php\n\ninclude('func5.php');\nwhile(1){\n" . '$ans=' . "runThread(" . $x . ");\n";
+    $str = "<?php\n\ninclude('func6.php');\nwhile(1){\n" . '$ans=' . "runThread(" . $x . ");\n";
     $str .= "\n}\n";
     log_action($str, $file);
 }
@@ -18,3 +18,5 @@ function log_action($msg, $logFile)
     @fclose($fp);
     return TRUE;
 }
+
+//5693604468 

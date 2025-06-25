@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import logo from "../assets/download.png";
 import backgroundImage from "../assets/para.png";
+import { MdInsertDriveFile } from "react-icons/md";
 
 const DashboardLayout = () => {
 	const navigate = useNavigate();
@@ -89,6 +90,12 @@ const DashboardLayout = () => {
 							<FiUsers className='text-lg' /> Create User
 						</Link>
 					)}
+					<Link
+						to='/dashboard/logs'
+						className='flex items-center gap-3 px-3 py-2 rounded-md text-gray-200 hover:bg-blue-600 hover:text-white transition-colors'
+					>
+						<MdInsertDriveFile className='text-lg' /> Logs
+					</Link>
 				</nav>
 			</aside>
 
