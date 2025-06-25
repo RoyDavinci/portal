@@ -1,0 +1,36 @@
+phoneNo/phone_number/phone/msisdn -> msisdn
+
+
+firstname, lasyname, otp, msisdn
+
+
+required input => "header of phone"
+
+firstname, lastname, otp, phone, account, link, 
+
+
+                    column table
+
+params1, params2, params3, params4, params5, phoneHeader 
+                                                 
+
+
+uploaded_files
+
+1) messages  - 32m / 64m
+
+a)csv column headers ->  sender_id, text, phone, status, error_name, error_code, msg_count, pages, cst_ctr, batch_id, sent_date, done_date
+b)save file as ->  output_batch_id_cost_ctr_date.csv 
+
+2) messages/uploaded_files
+
+a) group by network  -> total cost per network  (coming from messages). MTN/Airtel/Glo = 4.9 9mobile = 2.7
+b) total count, total distinct, total dupolicates -> coming from uploaded_files.
+c) delivery ratio - delivered count, undelivered count, pending count, expired count, rejected count.
+
+DELIVRD
+UNDELIV
+EXPIRD
+REJECTD
+NULL
+

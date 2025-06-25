@@ -43,7 +43,7 @@ const FileUploadServer = () => {
 		try {
 			const token = localStorage.getItem("token");
 			const response = await axios.post(
-				"https://bulksms.approot.ng///process_file.php", //  Endpoint
+				"https://bulksms.approot.ng//process_file.php", //  Endpoint
 				formData,
 				{
 					headers: {

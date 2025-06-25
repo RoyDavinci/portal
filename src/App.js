@@ -15,6 +15,9 @@ import SendFormattedSms from "./pages/SendFormattedSms";
 import FileUploadServer from "./pages/New";
 import MessageSearch from "./pages/Search";
 import UploadedFilesList from "./pages/UploadedFiles.";
+import OtpPage from "./pages/Otp";
+import SummaryPage from "./pages/SummaryPage";
+import ManageMessageCategories from "./pages/CreateCategories";
 
 function App() {
 	return (
@@ -22,6 +25,7 @@ function App() {
 			<Routes>
 				{/* Public Route */}
 				<Route path='/' element={<LoginPage />} />
+				<Route path='/otp' element={<OtpPage />} />
 
 				{/* Protected Routes */}
 				<Route
@@ -48,6 +52,8 @@ function App() {
 					<Route path='formatted-sms' element={<FileUploadServer />} />
 					<Route path='search' element={<MessageSearch />} />
 					<Route path='uploaded_files' element={<UploadedFilesList />} />
+					<Route path='summary' element={<SummaryPage />} />
+					<Route path='categories' element={<ManageMessageCategories />} />
 				</Route>
 
 				<Route path='*' element={<NotFoundPage />} />

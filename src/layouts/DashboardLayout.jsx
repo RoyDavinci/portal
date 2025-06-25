@@ -10,8 +10,8 @@ import {
 	IconButton,
 	Tooltip,
 } from "@mui/material";
-import logo from "../assets/RedpayVT.jpg";
-import backgroundImage from "../assets/RedpayVT.png";
+import logo from "../assets/download.png";
+import backgroundImage from "../assets/para.png";
 
 const DashboardLayout = () => {
 	const navigate = useNavigate();
@@ -60,7 +60,13 @@ const DashboardLayout = () => {
 						to='/dashboard/send-multiple-sms'
 						className='flex items-center gap-3 px-3 py-2 rounded-md text-gray-200 hover:bg-blue-600 hover:text-white transition-colors'
 					>
-						<FiSend className='text-lg' /> Send Multiple SMS
+						<FiSend className='text-lg' /> Upload File
+					</Link>
+					<Link
+						to='/dashboard/uploaded_files'
+						className='flex items-center gap-3 px-3 py-2 rounded-md text-gray-200 hover:bg-blue-600 hover:text-white transition-colors'
+					>
+						<FiFileText className='text-lg' /> Uploaded Files
 					</Link>
 
 					<Link
@@ -68,6 +74,12 @@ const DashboardLayout = () => {
 						className='flex items-center gap-3 px-3 py-2 rounded-md text-gray-200 hover:bg-blue-600 hover:text-white transition-colors'
 					>
 						<FiSend className='text-lg' /> Search
+					</Link>
+					<Link
+						to='/dashboard/categories'
+						className='flex items-center gap-3 px-3 py-2 rounded-md text-gray-200 hover:bg-blue-600 hover:text-white transition-colors'
+					>
+						<FiSend className='text-lg' /> Create SMS Category
 					</Link>
 					{(currentRole === "admin" || currentRole === "super_admin") && (
 						<Link
@@ -77,33 +89,6 @@ const DashboardLayout = () => {
 							<FiUsers className='text-lg' /> Create User
 						</Link>
 					)}
-
-					{currentRole === "super_admin" && (
-						<Link
-							to='/dashboard/create_organization'
-							className='flex items-center gap-3 px-3 py-2 rounded-md text-gray-200 hover:bg-blue-600 hover:text-white transition-colors'
-						>
-							<FiUsers className='text-lg' /> Create Organization
-						</Link>
-					)}
-					<Link
-						to='/dashboard/create_sms_group'
-						className='flex items-center gap-3 px-3 py-2 rounded-md text-gray-200 hover:bg-blue-600 hover:text-white transition-colors'
-					>
-						<FiLayers className='text-lg' /> Create SMS Group
-					</Link>
-					<Link
-						to='/dashboard/update_sms_group_numbers'
-						className='flex items-center gap-3 px-3 py-2 rounded-md text-gray-200 hover:bg-blue-600 hover:text-white transition-colors'
-					>
-						<FiLayers className='text-lg' /> Update SMS Numbers
-					</Link>
-					<Link
-						to='/dashboard/uploaded_files'
-						className='flex items-center gap-3 px-3 py-2 rounded-md text-gray-200 hover:bg-blue-600 hover:text-white transition-colors'
-					>
-						<FiFileText className='text-lg' /> Uploaded Files
-					</Link>
 				</nav>
 			</aside>
 
@@ -153,22 +138,24 @@ const DashboardLayout = () => {
 				</header>
 
 				{/* Scrollable Content */}
-				<main className='relative flex-1 overflow-y-auto p-6 min-h-screen'>
-					{/* Background layer with opacity */}
-					<div
-						className='absolute inset-0 z-0 h-full w-full'
-						style={{
-							backgroundImage: `url(${logo})`,
-							backgroundSize: "cover",
-							backgroundPosition: "center",
-							backgroundRepeat: "no-repeat",
-							opacity: 0.2,
-						}}
-					></div>
+				<main className='relative flex-1 overflow-y-auto p-6 pb-20'>
+					<div className='relative min-h-full'>
+						{/* Background */}
+						<div
+							className='absolute inset-0 z-0'
+							style={{
+								backgroundImage: `url(${logo})`,
+								backgroundSize: "cover",
+								backgroundPosition: "center",
+								backgroundRepeat: "no-repeat",
+								opacity: 0.2,
+							}}
+						></div>
 
-					{/* Foreground content */}
-					<div className='relative z-10 bg-white bg-opacity-80 p-4 rounded-lg shadow-md min-h-screen'>
-						<Outlet />
+						{/* Foreground */}
+						<div className='relative z-10 bg-white bg-opacity-80 p-4 rounded-lg shadow-md'>
+							<Outlet />
+						</div>
 					</div>
 				</main>
 			</div>

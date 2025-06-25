@@ -28,24 +28,24 @@ ChartJS.register(
 
 const DashboardPage = () => {
 	const [chartData, setChartData] = useState(null);
-	const [messageSummary, setMessageSummary] = useState(null);
+	const [messageSummary, setMessageSummary] = useState({});
 	const [deliveryRates, setDeliveryRates] = useState({});
-	const [totalMessages, setTotalMessages] = useState(0);
 	const [loading, setLoading] = useState(true);
 	const [queuesTotal, setQueuesTotal] = useState(0);
 	const [messagesTotal, setMessagesTotal] = useState(0);
+	const [totalPages, setTotalPages] = useState(0);
+	const [totalDuplicate, setTotalDuplicate] = useState(0);
+	const [isFileProcessing, setIsFileProcessing] = useState(false);
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const res = await axios.get("https://bulksms.approot.ng///portal.php");
+				const res = await axios.get("https://bulksms.approot.ng//portal.php");
 				const result = res.data;
 
 				if (result.status === "success") {
 					const labels = Object.keys(result.data);
 					const counts = labels.map((network) => result.data[network].length);
-					const total = counts.reduce((sum, val) => sum + val, 0);
-
 					setChartData({
 						labels,
 						datasets: [
@@ -53,22 +53,24 @@ const DashboardPage = () => {
 								label: "Messages Sent Today",
 								data: counts,
 								backgroundColor: [
-									"#1E3A8A", // blue
-									"#059669", // green
-									"#D97706", // amber
-									"#B91C1C", // red
-									"#7C3AED", // purple
+									"#1E3A8A",
+									"#059669",
+									"#D97706",
+									"#B91C1C",
+									"#7C3AED",
 								],
 								borderRadius: 6,
 							},
 						],
 					});
 
-					setTotalMessages(total);
 					setMessageSummary(result.data);
 					setDeliveryRates(result.delivery_rates || {});
 					setQueuesTotal(result.totals.queues || 0);
 					setMessagesTotal(result.totals.messages || 0);
+					setTotalPages(result.totals.pages || 0);
+					setTotalDuplicate(result.totals.duplicate || 0);
+					setIsFileProcessing(result.loading === true);
 				}
 			} catch (error) {
 				console.error("Failed to fetch messages data", error);
@@ -78,10 +80,8 @@ const DashboardPage = () => {
 		};
 
 		fetchData();
-
-		setInterval(() => {
-			fetchData();
-		}, 4000);
+		const interval = setInterval(fetchData, 4000);
+		return () => clearInterval(interval);
 	}, []);
 
 	return (
@@ -94,40 +94,59 @@ const DashboardPage = () => {
 				<p className='text-center text-gray-500'>Loading message data...</p>
 			) : chartData ? (
 				<>
+					{isFileProcessing && (
+						<div className='mb-6 bg-yellow-100 border border-yellow-300 text-yellow-800 px-4 py-3 rounded-lg shadow animate-pulse text-center'>
+							<span className='font-semibold'>File upload in progress...</span>{" "}
+							We're currently processing your uploaded file. Summary will update
+							shortly.
+						</div>
+					)}
+
 					{/* Summary Stats */}
 					<div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
-						<div className='bg-white p-6 rounded-lg shadow flex items-center space-x-4'>
-							<FiMessageCircle className='text-blue-600 text-3xl' />
-							<div>
-								<p className='text-gray-600'>Total Messages Processed</p>
-								<h2 className='text-xl font-bold'>{messagesTotal}</h2>
+						{[
+							{
+								icon: <FiMessageCircle className='text-blue-600 text-3xl' />,
+								label: "Total Messages Processed",
+								value: messagesTotal,
+							},
+							{
+								icon: <FiMessageCircle className='text-indigo-600 text-3xl' />,
+								label: "Total SMS Pages",
+								value: totalPages,
+							},
+							{
+								icon: <FiMessageCircle className='text-indigo-600 text-3xl' />,
+								label: "Total Duplicates",
+								value: totalDuplicate,
+							},
+							{
+								icon: <FiSmartphone className='text-green-600 text-3xl' />,
+								label: "Networks",
+								value: Object.keys(messageSummary).length,
+							},
+							{
+								icon: <FiUsers className='text-purple-600 text-3xl' />,
+								label: "Total Items Pending",
+								value: queuesTotal,
+							},
+							{
+								icon: <FiActivity className='text-yellow-600 text-3xl' />,
+								label: "Today's Date",
+								value: new Date().toDateString(),
+							},
+						].map((item, idx) => (
+							<div
+								key={idx}
+								className='bg-white p-6 rounded-lg shadow flex items-center space-x-4'
+							>
+								{item.icon}
+								<div>
+									<p className='text-gray-600'>{item.label}</p>
+									<h2 className='text-xl font-bold'>{item.value}</h2>
+								</div>
 							</div>
-						</div>
-						<div className='bg-white p-6 rounded-lg shadow flex items-center space-x-4'>
-							<FiSmartphone className='text-green-600 text-3xl' />
-							<div>
-								<p className='text-gray-600'>Networks</p>
-								<h2 className='text-xl font-bold'>
-									{Object.keys(messageSummary).length}
-								</h2>
-							</div>
-						</div>
-						<div className='bg-white p-6 rounded-lg shadow flex items-center space-x-4'>
-							<FiUsers className='text-purple-600 text-3xl' />
-							<div>
-								<p className='text-gray-600'>Total Items Pending</p>
-								<h2 className='text-xl font-bold'>{queuesTotal}</h2>
-							</div>
-						</div>
-						<div className='bg-white p-6 rounded-lg shadow flex items-center space-x-4'>
-							<FiActivity className='text-yellow-600 text-3xl' />
-							<div>
-								<p className='text-gray-600'>Today's Date</p>
-								<h2 className='text-xl font-bold'>
-									{new Date().toDateString()}
-								</h2>
-							</div>
-						</div>
+						))}
 					</div>
 
 					{/* Bar Chart */}
@@ -141,10 +160,7 @@ const DashboardPage = () => {
 								responsive: true,
 								plugins: {
 									legend: { display: false },
-									title: {
-										display: false,
-										text: "Messages Sent by Network",
-									},
+									title: { display: false },
 								},
 							}}
 						/>

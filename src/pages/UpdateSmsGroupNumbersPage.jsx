@@ -26,7 +26,7 @@ const UpdateSmsGroupNumbersPage = () => {
 			try {
 				const token = localStorage.getItem("token");
 				const response = await axios.get(
-					"https://bulksms.approot.ng///list_groups.php",
+					"https://bulksms.approot.ng//list_groups.php",
 					{
 						headers: { Authorization: `Bearer ${token}` },
 					}
@@ -170,7 +170,7 @@ const UpdateSmsGroupNumbersPage = () => {
 			formData.append("action", action);
 
 			const response = await axios.post(
-				"https://bulksms.approot.ng///update_sms_group_numbers.php",
+				"https://bulksms.approot.ng//update_sms_group_numbers.php",
 				formData,
 				{
 					headers: {

@@ -78,7 +78,7 @@ const MessageSearch = () => {
 		try {
 			setLoading(true);
 			const response = await axios.get(
-				"https://bulksms.approot.ng///search.php",
+				"https://bulksms.approot.ng//search.php",
 				{
 					params: {
 						phoneNumber,

@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 const LoginForm = () => {
-	const navigate = useNavigate(); // Use navigate for redirection
+	const navigate = useNavigate();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
@@ -14,7 +14,7 @@ const LoginForm = () => {
 
 		try {
 			const response = await axios.post(
-				"https://bulksms.approot.ng//login.php",
+				"https://bulksms.approot.ng/login.php",
 				{
 					email,
 					password,
@@ -23,11 +23,8 @@ const LoginForm = () => {
 
 			if (response.data.status) {
 				toast.success("Login successful!");
-
-				localStorage.setItem("token", response.data.token);
-				localStorage.setItem("role", response.data.role);
-
-				navigate("/dashboard");
+				sessionStorage.setItem("token", response.data.token);
+				navigate("/otp");
 			} else {
 				toast.error(response.data.message || "Invalid credentials.");
 			}

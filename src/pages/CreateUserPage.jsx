@@ -4,29 +4,36 @@ import axios from "axios";
 
 const CreateUserPage = () => {
 	const [email, setEmail] = useState("");
+	const [fullName, setFullName] = useState("");
 	const [role, setRole] = useState("");
 	const [password, setPassword] = useState("");
-	const [organisations, setOrganisations] = useState([]);
-	const [selectedOrg, setSelectedOrg] = useState("");
+	// const [organisations, setOrganisations] = useState([]);
+	// const [selectedOrg, setSelectedOrg] = useState("");
 
 	const currentRole = localStorage.getItem("role");
 
-	useEffect(() => {
-		if (currentRole === "super_admin") {
-			axios
-				.get("https://bulksms.approot.ng///get_organisations.php")
-				.then((res) => {
-					if (res.data.status && res.data.organisations) {
-						setOrganisations(res.data.organisations);
-					} else {
-						toast.error("Failed to fetch organisations");
-					}
-				})
-				.catch(() => {
-					toast.error("An error occurred while fetching organisations.");
-				});
-		}
-	}, [currentRole]);
+	// useEffect(() => {
+	// 	if (currentRole === "super_admin") {
+	// 		const token = localStorage.getItem("token");
+	// 		axios
+	// 			.get("https://bulksms.approot.ng//get_organisations.php", {
+	// 				headers: {
+	// 					Authorization: `Bearer ${token}`,
+	// 					"Content-Type": "application/json",
+	// 				},
+	// 			})
+	// 			.then((res) => {
+	// 				if (res.data.status && res.data.organisations) {
+	// 					setOrganisations(res.data.organisations);
+	// 				} else {
+	// 					toast.error("Failed to fetch organisations");
+	// 				}
+	// 			})
+	// 			.catch(() => {
+	// 				toast.error("An error occurred while fetching organisations.");
+	// 			});
+	// 	}
+	// }, [currentRole]);
 
 	const handleCreateUser = async (e) => {
 		e.preventDefault();
@@ -36,15 +43,16 @@ const CreateUserPage = () => {
 				email,
 				role,
 				password,
+				full_name: fullName,
 			};
 
-			if (currentRole === "super_admin" && selectedOrg) {
-				payload.org_id = selectedOrg;
-			}
+			// if (currentRole === "super_admin" && selectedOrg) {
+			// 	payload.org_id = selectedOrg;
+			// }
 			const token = localStorage.getItem("token");
 
 			const response = await axios.post(
-				"https://bulksms.approot.ng///create_user.php",
+				"https://bulksms.approot.ng//create_user.php",
 				payload,
 				{
 					headers: {
@@ -82,6 +90,22 @@ const CreateUserPage = () => {
 				</h2>
 				<form onSubmit={handleCreateUser} className='space-y-6'>
 					<div>
+						<label
+							htmlFor='fullname'
+							className='block text-gray-700 font-medium'
+						>
+							Full Name
+						</label>
+						<input
+							type='text'
+							id='fullname'
+							value={fullName}
+							onChange={(e) => setFullName(e.target.value)}
+							className='w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500'
+							required
+						/>
+					</div>
+					<div>
 						<label htmlFor='email' className='block text-gray-700 font-medium'>
 							Email
 						</label>
@@ -113,7 +137,7 @@ const CreateUserPage = () => {
 							))}
 						</select>
 					</div>
-					{currentRole === "super_admin" && (
+					{/* {currentRole === "super_admin" && (
 						<div>
 							<label
 								htmlFor='organisation'
@@ -136,7 +160,7 @@ const CreateUserPage = () => {
 								))}
 							</select>
 						</div>
-					)}
+					)} */}
 					<div>
 						<label
 							htmlFor='password'

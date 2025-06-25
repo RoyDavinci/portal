@@ -12,7 +12,7 @@ const CreateOrganizationPage = () => {
 
 		try {
 			const response = await axios.post(
-				"https://bulksms.approot.ng//create_organization.php",
+				"https://bulksms.approot.ng/create_organization.php",
 				{
 					orgName,
 					orgEmail,
